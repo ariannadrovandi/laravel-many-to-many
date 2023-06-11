@@ -18,7 +18,7 @@
                             <h2>{{ $project->title }}</h2>
                             <p>{{ $project->description }}</p>
                             <p>Type: {{ $project->type ? $project->type->name : 'Senza tipologia' }}</p>
-                            @if ($project->tags && count($post->tags) > 0)
+                            @if ($project->tags && count($project->tags) > 0)
                                 <div>
                                     @foreach ($project->tags as $tag)
                                         <a href="{{ route('admin.tags.show', $tag->slug) }}"
