@@ -38,7 +38,7 @@
                 @enderror
             </div>
 
-            <div class="mb3">
+            <div class="mb-3">
                 <label for="type_id">Type</label>
                 <select name="type_id" id="type_id" class="form-control @error('type_id') is-invalid @enderror">
                     <option value="">Select</option>
@@ -50,6 +50,23 @@
                     @endforeach
                 </select>
                 @error('category_id')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <div class="form-group mb-3">
+                <p>Seleziona i Tag:</p>
+                @foreach ($tags as $tag)
+                    <div>
+                        @if ($errors->any())
+                            <input type="checkbox" name="tags[]" value="{{ $tag->id }}" class="form-check-input" {{ in_array($tag->id, old('tags', [])) ? 'checked' : '' }}>
+                        @else
+                            <input type="checkbox" name="tags[]" value="{{ $tag->id }}" class="form-check-input" {{ $project->tags->contains($tag) ? 'checked' : '' }}>
+                        @endif
+                        <label for="" class="form-check-label">{{ $tag->name }}</label>
+                    </div>
+                @endforeach
+                @error('tags')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>

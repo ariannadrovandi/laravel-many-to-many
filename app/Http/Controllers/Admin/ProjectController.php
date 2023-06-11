@@ -8,6 +8,7 @@ use App\Models\Project;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
 use App\Models\Type;
+use App\Models\Tag;
 
 class ProjectController extends Controller
 {
@@ -31,7 +32,8 @@ class ProjectController extends Controller
     public function create(Project $project)
     {
         $types = Type::all();
-        return view('admin.projects.create', compact('types'));
+        $tags = Tag::all();
+        return view('admin.projects.create', compact('types', 'tags'));
     }
 
     /**
@@ -46,6 +48,10 @@ class ProjectController extends Controller
         $slug = Str::slug($data['title'], '-');
         $data['slug'] = $slug;
         $project = Project::create($data);
+
+        if ($request->has('tags')) {
+            $project->tags()->attach($request->tags);
+        }
         return redirect()->route('admin.projects.show', $project->slug);
     }
 
@@ -69,7 +75,8 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::all();
-        return view('admin.projects.edit', compact('project', 'types'));
+        $tags = Tag::all();
+        return view('admin.projects.edit', compact('project', 'types','tags'));
     }
 
     /**
@@ -85,6 +92,11 @@ class ProjectController extends Controller
         $slug = Str::slug($request->title, '-');
         $data['slug'] = $slug;
         $project->update($data);
+        if ($request->has('tags')) {
+            $project->tags()->sync($request->tags);
+        } else {
+            $project->tags()->sync([]);
+        }
         return redirect()->route('admin.projects.show', $project->slug)->with('message', 'Il post modificato con successo.');
     }
 

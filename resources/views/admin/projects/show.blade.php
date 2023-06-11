@@ -17,6 +17,15 @@
                         <div class="card-body">
                             <h2>{{ $project->title }}</h2>
                             <p>{{ $project->description }}</p>
+                            <p>Type: {{ $project->type ? $project->type->name : 'Senza tipologia' }}</p>
+                            @if ($project->tags && count($post->tags) > 0)
+                                <div>
+                                    @foreach ($project->tags as $tag)
+                                        <a href="{{ route('admin.tags.show', $tag->slug) }}"
+                                            class="badge rounded-pill text-bg-info">{{ $tag->name }}</a>
+                                    @endforeach
+                                </div>
+                            @endif
                         </div>
                         <div class="d-grid gap-2 d-flex">
                             <button type="button" class="btn me-1 my-2 ms-2 btn-outline-primary">

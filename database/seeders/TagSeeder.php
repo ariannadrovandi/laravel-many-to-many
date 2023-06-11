@@ -18,6 +18,7 @@ class TagSeeder extends Seeder
     {
         $tags = [
             'Html',
+            'PHP',
             'Vue',
             'JS',
             'CSS',
